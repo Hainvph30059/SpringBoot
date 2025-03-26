@@ -1,4 +1,4 @@
-package com.srping.identify_course.dto.response;
+package com.srping.identify_course.dto.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,7 +8,6 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AuthenticationResponse {
-    boolean authenticated;
+public class IntrospectRequest {
     String token;
 }
