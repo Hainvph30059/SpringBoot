@@ -8,11 +8,13 @@ import com.srping.identify_course.dto.response.UserResponse;
 import com.srping.identify_course.mapper.UserMapper;
 import com.srping.identify_course.service.UserService;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@Slf4j
 @RestController //định nghĩa một controller
 @RequestMapping("/users")
 public class UserController {
@@ -29,13 +31,26 @@ public class UserController {
     }
 
     @GetMapping
-    List<User> getAllUsers() {
-        return userService.getAllUsers();
+    ApiReponse<List<UserResponse>> getAllUsers() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        log.info("User Name: {}", authentication.getName());
+        authentication.getAuthorities().forEach(grantedAuthority -> log.info("GrantedAuthority: {}", grantedAuthority.getAuthority()));
+        return  ApiReponse.<List<UserResponse>>builder()
+                .result(userService.getAllUsers())
+                .build();
     }
 
     @GetMapping("/{userId}")
     UserResponse getUserById(@PathVariable("userId") String userId) {
         return userService.findUserById(userId);
+    }
+
+    @GetMapping("/myInfo")
+    ApiReponse<UserResponse> getMyInfo() {
+        return ApiReponse.<UserResponse>builder()
+                .result(userService.getMyInfo())
+                .build();
     }
 
     @PutMapping("/{userId}")
