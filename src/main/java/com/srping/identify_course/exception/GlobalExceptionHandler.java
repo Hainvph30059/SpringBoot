@@ -1,12 +1,14 @@
 package com.srping.identify_course.exception;
 
 import com.srping.identify_course.dto.request.ApiReponse;
+import org.springframework.expression.AccessException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-@ControllerAdvice // thông báo cho spring đây là nơi nhận và xử lý các ngoại lệ
+@ControllerAdvice // thông báo cho spring đây là nơi nhận và xử lý các ngoại lệ toàn cục
 public class GlobalExceptionHandler {
     @ExceptionHandler(value = RuntimeException.class)
     ResponseEntity<ApiReponse> handlingRunTimeException(RuntimeException exception) { // bắt ngoại lệ với runtimeException
@@ -35,7 +37,7 @@ public class GlobalExceptionHandler {
         apiReponse.setCode(errorCode.getCode());
         apiReponse.setMessage(errorCode.getMessage());
 
-        return ResponseEntity.badRequest().body(apiReponse);
+        return ResponseEntity.status(errorCode.getHttpStatusCode()).body(apiReponse);
     }
 // Bắt ngoại lệ chưa định nghĩa trong chương trình
     @ExceptionHandler(value = Exception.class)
@@ -46,5 +48,17 @@ public class GlobalExceptionHandler {
         apiReponse.setMessage(errorCode.getMessage());
 
         return ResponseEntity.badRequest().body(apiReponse);
+    }
+
+    @ExceptionHandler(value = AccessDeniedException.class)
+    ResponseEntity<ApiReponse> handlingAccessDeniedException(AccessDeniedException exception){
+        ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
+
+        return ResponseEntity.status(errorCode.getHttpStatusCode()).body(
+                ApiReponse.builder()
+                        .code(errorCode.getCode())
+                        .message(errorCode.getMessage())
+                        .build()
+        );
     }
 }
