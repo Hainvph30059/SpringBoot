@@ -23,7 +23,7 @@ public class UserController {
     ApiReponse<User> createUser(@RequestBody @Valid UserCreationRequest userCreationRequest) {
         //@RequestBody gán thông tin nhận được từ controller vào Object
         //@Valid thông báo cho spring rằng đối tượng phải được validation
-        ApiReponse<User> apiReponse = new ApiReponse<>();
+        ApiReponse<User> apiReponse = new ApiReponse<User>();
         apiReponse.setResult(userService.createUser(userCreationRequest));
         return apiReponse;
     }
