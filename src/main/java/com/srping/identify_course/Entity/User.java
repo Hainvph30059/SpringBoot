@@ -1,18 +1,19 @@
 package com.srping.identify_course.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-import lombok.AccessLevel;
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity // định nghĩa một entity
-@Data
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
     @Id // Anotation gán thuộc tính là id
@@ -23,4 +24,6 @@ public class User {
      String firstName;
      String lastName;
      LocalDate dob;
+    @ElementCollection
+     Set<String> roles;
 }
