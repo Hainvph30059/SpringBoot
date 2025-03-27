@@ -11,6 +11,7 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring") // khai báo để dùng trong spring
 public interface UserMapper {
     User toUser(UserCreationRequest request);
+    @Mapping(target = "roles", ignore = true)
     void updateUser(@MappingTarget User user, UserUpdateRequest request); // map data từ request sang user
     UserResponse toUserResponse(User user);
 }

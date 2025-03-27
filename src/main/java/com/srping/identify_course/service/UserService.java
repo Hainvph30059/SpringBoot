@@ -1,6 +1,7 @@
 package com.srping.identify_course.service;
 
 import com.srping.identify_course.Entity.User;
+import com.srping.identify_course.Repository.RoleRepository;
 import com.srping.identify_course.Repository.UserRepository;
 import com.srping.identify_course.dto.request.UserCreationRequest;
 import com.srping.identify_course.dto.request.UserUpdateRequest;
@@ -28,7 +29,8 @@ import java.util.List;
 public class UserService {
 
      UserRepository userRepository;
-
+     PasswordEncoder passwordEncoder;
+     RoleRepository roleRepository;
      UserMapper userMapper;
 
     public User createUser(UserCreationRequest request){
@@ -46,7 +48,9 @@ public class UserService {
        // user.setRoles(roles);
         return userRepository.save(user);
     }
+    // Tự động kiểm tra các authority có tiền tố ROLE_ở trước
     @PreAuthorize("hasRole('ADMIN')") //Chỉ cho phép user có role quy định được truy cập method
+    // @PreAuthorize("hasAuthority('APPROVE_DATA')") // sử dụng cho các authority binh thường không có tiền tố ROLE_ ở trước ví dụ các permission
     public List<UserResponse> getAllUsers() {
         return userRepository.findAll().stream().map(userMapper::toUserResponse).toList();
     }
@@ -70,9 +74,11 @@ public class UserService {
     public UserResponse updateUser(String userId, UserUpdateRequest request){
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User Not Found"));
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXIT));
         userMapper.updateUser(user, request);
-
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        var roles = roleRepository.findAllById(request.getRoles());
+        user.setRoles(new HashSet<>(roles));
         return userMapper.toUserResponse(userRepository.save(user));
     }
 

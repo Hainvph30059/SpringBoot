@@ -95,8 +95,14 @@ public class AuthenticationService {
 
     private String buildScope(User user){
         StringJoiner stringJoiner = new StringJoiner(" ");
-       // if(!CollectionUtils.isEmpty(user.getRoles()))
-       //     user.getRoles().forEach(stringJoiner::add);
+        if(!CollectionUtils.isEmpty(user.getRoles()))
+           user.getRoles().forEach(roles -> {
+                       stringJoiner.add("ROLE_" + roles.getName());
+                       if (!CollectionUtils.isEmpty(roles.getPermissions())){
+                            roles.getPermissions()
+                                    .forEach(permissions -> stringJoiner.add(permissions.getName()));
+                       }
+                   });
         return stringJoiner.toString();
     }
 }
