@@ -16,6 +16,4 @@ public class UserResponse {
     String firstName;
     String lastName;
     LocalDate dob;
-    @ElementCollection
-    Set<String> roles;
 }

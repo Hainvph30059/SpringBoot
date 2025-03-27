@@ -43,7 +43,7 @@ public class UserService {
 
         HashSet<String> roles = new HashSet<>();
         roles.add(Role.USER.name());
-        user.setRoles(roles);
+       // user.setRoles(roles);
         return userRepository.save(user);
     }
     @PreAuthorize("hasRole('ADMIN')") //Chỉ cho phép user có role quy định được truy cập method

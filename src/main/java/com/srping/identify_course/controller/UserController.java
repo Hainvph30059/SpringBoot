@@ -8,6 +8,9 @@ import com.srping.identify_course.dto.response.UserResponse;
 import com.srping.identify_course.mapper.UserMapper;
 import com.srping.identify_course.service.UserService;
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,9 +20,10 @@ import java.util.List;
 @Slf4j
 @RestController //định nghĩa một controller
 @RequestMapping("/users")
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class UserController {
-    @Autowired
-    private UserService userService;
+    UserService userService;
 
     @PostMapping
     ApiReponse<User> createUser(@RequestBody @Valid UserCreationRequest userCreationRequest) {
