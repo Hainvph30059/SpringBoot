@@ -1,9 +1,9 @@
 package com.srping.identify_course.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
 
 @Data
 @Builder
@@ -14,6 +14,7 @@ import lombok.experimental.FieldDefaults;
 public class ApiReponse<T> {
     @Builder.Default
     private int code = 1000;
+
     private String message;
     private T result;
 }

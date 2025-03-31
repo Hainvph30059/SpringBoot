@@ -1,11 +1,9 @@
 package com.srping.identify_course.Entity;
 
 import jakarta.persistence.*;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDate;
-import java.util.Set;
 
 @Entity // định nghĩa một entity
 @Getter
@@ -16,6 +14,7 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Permission {
     @Id // Anotation gán thuộc tính là id
-     String name;
-     String description;
+    String name;
+
+    String description;
 }
